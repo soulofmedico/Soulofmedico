@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Online Tests - Soul of Medico NEET Preparation">
+    <title>Tests - Soul of Medico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='white' text-anchor='middle' dominant-baseline='central' font-weight='bold'>📚</text></svg>">
+</head>
+<body>
+
+<div class="container">
+    <!-- TEST LIST VIEW -->
+    <div class="screen test-screen active" id="testListScreen">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="top-bar-center">
+                <div class="batch-name">Tests</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="scroll-container">
+            <div style="padding: 15px;">
+                <h3 style="margin-bottom: 15px; color: #333;">Available Tests</h3>
+                <div id="testsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEST SCREEN (QUESTION VIEW) -->
+    <div class="screen test-screen" id="testQuestionScreen" style="display: none; flex-direction: column; padding: 0;">
+        <div class="test-header">
+            <button class="back-btn" onclick="exitTest()">← Exit</button>
+            <div style="text-align: center; flex: 1;">
+                <div style="font-weight: 600;" id="testTitle">Test</div>
+                <div style="font-size: 12px; color: #999;" id="testTimer">00:00</div>
+            </div>
+            <div style="width: 40px; text-align: right; font-weight: 600;" id="questionCounter">1/20</div>
+        </div>
+
+        <div class="question-header">
+            <div class="question-text" id="questionText">Question text will appear here</div>
+        </div>
+
+        <div class="question-body">
+            <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <div class="question-nav">
+            <button class="btn-small btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+            <button class="btn-small btn-primary" onclick="submitTest()">Submit Test</button>
+            <button class="btn-small btn-secondary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+    </div>
+
+    <!-- TEST RESULT SCREEN -->
+    <div class="screen test-screen" id="testResultScreen" style="display: none; justify-content: center; align-items: center;">
+        <div class="result-box">
+            <div style="font-size: 48px;" id="resultIcon">✅</div>
+            <div style="font-size: 18px; font-weight: 600; margin-top: 10px;">Test Complete!</div>
+            <div class="result-score" id="resultScore">0/0</div>
+            <div class="result-detail">Correct: <strong id="correctCount">0</strong></div>
+            <div class="result-detail">Wrong: <strong id="wrongCount">0</strong></div>
+            <div class="result-detail">Accuracy: <strong id="accuracy">0%</strong></div>
+            <button class="btn btn-primary result-button" onclick="backToTestList()">Back to Tests</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="goHome()">
+            <div class="nav-icon">🏠</div>
+            Home
+        </button>
+        <button class="nav-item" onclick="goLectures()">
+            <div class="nav-icon">🎥</div>
+            Lectures
+        </button>
+        <button class="nav-item active" onclick="goTests()">
+            <div class="nav-icon">📝</div>
+            Tests
+        </button>
+        <button class="nav-item" onclick="goProfile()">
+            <div class="nav-icon">👤</div>
+            Profile
+        </button>
+    </div>
+</div>
+
+<script src="data.js"></script>
+<script src="tests.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+# 🎬 QUICK START: ADD VIDEOS IN 5 STEPS
+
+## ⚡ Super Quick Guide
+
+### 1. Go to Lectures Page
+Click **Lectures** from home screen
+
+### 2. Click "+ Add Video"
+Blue button in top-right corner
+
+### 3. Fill in Details
+- Title: "Your Lecture Name"
+- Subject: Select from dropdown
+- Duration: e.g., "45 min"
+- Upload: Select video file from computer
+
+### 4. Add Description & Notes
+Write what the video is about
+
+### 5. Click "✅ Save Lecture"
+Done! Video is saved
+
+---
+
+## ✅ Supported Video Formats
+- **MP4** ✅ (Best)
+- **WebM** ✅
+- **Ogg** ✅
+
+---
+
+## 📝 Example
+
+```
+Title:       IUPAC Nomenclature
+Subject:     Chemistry
+Duration:    45 min
+Video File:  chemistry-iupac.mp4
+Description: Learn how to name organic compounds
+Notes:       Important for organic chemistry
+```
+
+---
+
+## 🎮 Once Video is Added
+
+Click **"Watch"** to play
+- Play/Pause: Click video
+- Speed: 1x, 1.5x, 2x (bottom)
+- Full Screen: Double-click
+- Description: View lecture info
+
+---
+
+## 🆘 Problems?
+
+### "File too large?"
+Compress video first (HandBrake app)
+Max: 500MB
+
+### "Video doesn't play?"
+Convert to MP4 format first
+
+### "Lost my videos?"
+Check HOW_TO_ADD_VIDEOS.md for backup
+
+---
+
+**That's it! Your videos will play locally without any YouTube errors!**

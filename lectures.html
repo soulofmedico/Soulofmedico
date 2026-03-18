@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Video Lectures - Soul of Medico NEET Preparation">
+    <title>Lectures - Soul of Medico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='white' text-anchor='middle' dominant-baseline='central' font-weight='bold'>📚</text></svg>">
+</head>
+<body>
+
+<div class="container">
+    <div class="screen lecture-screen active" id="lectureScreen">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="top-bar-center">
+                <div class="batch-name">Lectures</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <!-- LECTURE LIST VIEW -->
+        <div id="lectureListView" class="scroll-container">
+            <div style="padding: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; color: #333;">Select a Lecture</h3>
+                    <button onclick="showAddVideoForm()" style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                        + Add Video
+                    </button>
+                </div>
+                <div id="lecturesList"></div>
+            </div>
+        </div>
+
+        <!-- ADD VIDEO FORM VIEW -->
+        <div id="addVideoForm" style="display: none; flex: 1; flex-direction: column; padding: 0; overflow-y: auto;">
+            <div class="video-header">
+                <button class="back-btn" onclick="cancelAddVideo()">← Cancel</button>
+                <div class="video-title">Add New Video</div>
+            </div>
+            
+            <div style="padding: 20px; flex: 1;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">📝 Lecture Title</label>
+                    <input type="text" id="videoTitle" placeholder="e.g., IUPAC Nomenclature" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">📚 Subject</label>
+                    <select id="videoSubject" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        <option>Chemistry</option>
+                        <option>Biology</option>
+                        <option>Physics</option>
+                        <option>English</option>
+                        <option>Mathematics</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">⏱️ Duration</label>
+                    <input type="text" id="videoDuration" placeholder="e.g., 45 min" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">🎬 Upload Video File</label>
+                    <input type="file" id="videoFileInput" accept="video/*" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    <small style="color: #666; display: block; margin-top: 5px;">✅ Supported: MP4, WebM, Ogg (Max 500MB)</small>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">📖 Description</label>
+                    <textarea id="videoDescription" placeholder="Enter lecture description..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; min-height: 80px; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">📝 Notes</label>
+                    <textarea id="videoNotes" placeholder="Enter important notes..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; min-height: 80px; resize: vertical;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="saveNewLecture()" style="flex: 1; padding: 12px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;">
+                        ✅ Save Lecture
+                    </button>
+                    <button onclick="cancelAddVideo()" style="flex: 1; padding: 12px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px;">
+                        ❌ Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO PLAYER VIEW -->
+        <div id="videoPlayerView" style="display: none; flex: 1; flex-direction: column; padding: 0;">
+            <div class="video-header">
+                <button class="back-btn" onclick="backToLectureList()">← Back</button>
+                <div class="video-title" id="videoTitle">Lecture</div>
+            </div>
+
+            <div class="video-container" id="videoContainer">
+                <div style="display: flex; align-items: center; justify-content: center; color: #999; width: 100%; height: 100%;">
+                    Loading video...
+                </div>
+            </div>
+
+            <div class="video-controls">
+                <span style="font-weight: 500; margin-right: auto;">Playback Speed</span>
+                <button class="speed-btn active" onclick="setSpeed(this, '1x')">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this, '1.5x')">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this, '2x')">2x</button>
+            </div>
+
+            <div class="video-description" id="videoDescription">
+                <div class="description-tabs">
+                    <div class="desc-tab active" onclick="switchDescTab(0)">Description</div>
+                    <div class="desc-tab" onclick="switchDescTab(1)">Notes</div>
+                </div>
+                <div class="desc-content active" id="descriptionContent"></div>
+                <div class="desc-content" id="notesContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="goHome()">
+            <div class="nav-icon">🏠</div>
+            Home
+        </button>
+        <button class="nav-item active" onclick="goLectures()">
+            <div class="nav-icon">🎥</div>
+            Lectures
+        </button>
+        <button class="nav-item" onclick="goTests()">
+            <div class="nav-icon">📝</div>
+            Tests
+        </button>
+        <button class="nav-item" onclick="goProfile()">
+            <div class="nav-icon">👤</div>
+            Profile
+        </button>
+    </div>
+</div>
+
+<script src="data.js"></script>
+<script src="lectures.js"></script>
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Admin Panel - Upload and Manage Videos for Soul of Medico">
+    <title>Admin Panel - Soul of Medico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='white' text-anchor='middle' dominant-baseline='central' font-weight='bold'>📚</text></svg>">
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .admin-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .upload-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .upload-section h2 {
+            color: #333;
+            margin-top: 0;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px 20px;
+            background: #f0f0f0;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        .file-input-wrapper input[type=file]:hover + .file-input-label,
+        .file-input-wrapper:hover .file-input-label {
+            background: #667eea;
+            color: white;
+            border-style: solid;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-upload {
+            flex: 1;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-upload:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            flex: 1;
+            padding: 14px 30px;
+            background: #f0f0f0;
+            color: #666;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        .videos-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .videos-section h2 {
+            color: #333;
+            margin-top: 0;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .video-card {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+
+        .video-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .video-card-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .video-card-meta {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .video-card-subject {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .video-card-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-watch {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-watch:hover {
+            background: #218838;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        body.dark-mode .upload-section,
+        body.dark-mode .videos-section {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        body.dark-mode .form-group label {
+            color: #fff;
+        }
+
+        body.dark-mode .video-card {
+            background: #2a2a2a;
+            border-color: #444;
+            color: #fff;
+        }
+
+        body.dark-mode .video-card-title {
+            color: #fff;
+        }
+
+        body.dark-mode .file-input-label {
+            background: #2a2a2a;
+            color: #667eea;
+            border-color: #667eea;
+        }
+
+        body.dark-mode .btn-reset {
+            background: #2a2a2a;
+            color: #fff;
+            border: 2px solid #444;
+        }
+
+        body.dark-mode .btn-reset:hover {
+            background: #3a3a3a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="admin-container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+
+        <div class="admin-header">
+            <h1>📚 Admin Panel</h1>
+            <p>Upload and manage lecture videos</p>
+        </div>
+
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="videoCount">0</div>
+                <div class="stat-label">Total Videos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="storageSize">0MB</div>
+                <div class="stat-label">Storage Used</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="maxStorage">~5MB</div>
+                <div class="stat-label">Storage Available</div>
+            </div>
+        </div>
+
+        <!-- UPLOAD SECTION -->
+        <div class="upload-section">
+            <h2>📤 Upload New Lecture Video</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lectureTitle">📝 Lecture Title *</label>
+                    <input type="text" id="lectureTitle" placeholder="e.g., IUPAC Nomenclature" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lectureSubject">📚 Subject *</label>
+                    <select id="lectureSubject" required>
+                        <option value="">Select a subject</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Physics">Physics</option>
+                        <option value="English">English</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="History">History</option>
+                        <option value="Geography">Geography</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lectureDuration">⏱️ Duration *</label>
+                    <input type="text" id="lectureDuration" placeholder="e.g., 45 min" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lectureChapter">📖 Chapter/Topic *</label>
+                    <input type="text" id="lectureChapter" placeholder="e.g., Chapter 5: Organic Chemistry" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="videoFile">🎬 Upload MP4 Video File *</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="videoFile" accept="video/mp4" required>
+                    <label for="videoFile" class="file-input-label">
+                        🎯 Click or drag MP4 video file here
+                    </label>
+                </div>
+                <div id="fileName" class="file-name"></div>
+                <small style="color: #999; display: block; margin-top: 8px;">
+                    ✅ Format: MP4 only | ⚠️ Max: 500MB | 💾 Recommended: 100-200MB
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="lectureDescription">📖 Description</label>
+                <textarea id="lectureDescription" placeholder="Write a description of the lecture..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="lectureNotes">📝 Important Notes</label>
+                <textarea id="lectureNotes" placeholder="Write any important notes for students..."></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-upload" onclick="uploadLecture()">
+                    ✅ Upload Video
+                </button>
+                <button class="btn-reset" onclick="resetForm()">
+                    🔄 Reset Form
+                </button>
+            </div>
+        </div>
+
+        <!-- VIDEOS LIST SECTION -->
+        <div class="videos-section">
+            <h2>📚 All Uploaded Videos</h2>
+            <div id="videosList" class="video-list"></div>
+        </div>
+    </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+    // ============================================
+    // ADMIN PANEL FUNCTIONS
+    // ============================================
+
+    let lecturesData = [];
+
+    function initAdmin() {
+        console.log('🔧 Admin panel initializing...');
+        
+        // Load dark mode
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Load lectures from localStorage
+        let savedLectures = localStorage.getItem('lectures');
+        if (savedLectures) {
+            lecturesData = JSON.parse(savedLectures);
+            console.log('✅ Loaded', lecturesData.length, 'lectures');
+        } else {
+            lecturesData = [];
+        }
+
+        displayVideos();
+        updateStats();
+
+        // File input visual feedback
+        const videoFile = document.getElementById('videoFile');
+        videoFile.addEventListener('change', function() {
+            const fileName = document.getElementById('fileName');
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+                fileName.innerHTML = `✅ Selected: <strong>${file.name}</strong> (${sizeMB}MB)`;
+            }
+        });
+
+        // Drag and drop
+        const fileInputWrapper = document.querySelector('.file-input-wrapper');
+        fileInputWrapper.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileInputWrapper.style.opacity = '0.7';
+        });
+
+        fileInputWrapper.addEventListener('dragleave', () => {
+            fileInputWrapper.style.opacity = '1';
+        });
+
+        fileInputWrapper.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInputWrapper.style.opacity = '1';
+            videoFile.files = e.dataTransfer.files;
+            
+            const event = new Event('change', { bubbles: true });
+            videoFile.dispatchEvent(event);
+        });
+    }
+
+    function uploadLecture() {
+        const title = document.getElementById('lectureTitle').value.trim();
+        const subject = document.getElementById('lectureSubject').value.trim();
+        const duration = document.getElementById('lectureDuration').value.trim();
+        const chapter = document.getElementById('lectureChapter').value.trim();
+        const description = document.getElementById('lectureDescription').value.trim();
+        const notes = document.getElementById('lectureNotes').value.trim();
+        const videoFile = document.getElementById('videoFile');
+
+        // Validation
+        if (!title || !subject || !duration || !chapter) {
+            showError('❌ Please fill all required fields');
+            return;
+        }
+
+        if (!videoFile.files || videoFile.files.length === 0) {
+            showError('❌ Please select a video file');
+            return;
+        }
+
+        const file = videoFile.files[0];
+        const sizeMB = file.size / 1024 / 1024;
+
+        // Validate file type
+        if (!file.type.includes('video/mp4')) {
+            showError('❌ Only MP4 format is supported');
+            return;
+        }
+
+        // Validate file size
+        if (sizeMB > 500) {
+            showError('❌ File is too large (Max 500MB)');
+            return;
+        }
+
+        console.log('📤 Reading video file:', file.name);
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const newId = lecturesData.length > 0 ? Math.max(...lecturesData.map(l => l.id)) + 1 : 1;
+
+            const newLecture = {
+                id: newId,
+                title: title,
+                subject: subject,
+                duration: duration,
+                chapter: chapter,
+                description: description,
+                notes: notes,
+                videoFile: e.target.result
+            };
+
+            lecturesData.push(newLecture);
+            localStorage.setItem('lectures', JSON.stringify(lecturesData));
+
+            console.log('✅ Lecture saved:', newLecture);
+            showSuccess(`✅ "${title}" uploaded successfully!`);
+            resetForm();
+            displayVideos();
+            updateStats();
+        };
+
+        reader.onerror = function() {
+            showError('❌ Error reading file. Please try again.');
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    function displayVideos() {
+        const videosList = document.getElementById('videosList');
+
+        if (lecturesData.length === 0) {
+            videosList.innerHTML = `
+                <div style="grid-column: 1/-1;">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No videos uploaded yet</h3>
+                        <p>Upload your first lecture video using the form above</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        lecturesData.forEach(lecture => {
+            html += `
+                <div class="video-card">
+                    <div class="video-card-title">${lecture.title}</div>
+                    <div class="video-card-meta">
+                        <span class="video-card-subject">${lecture.subject}</span>
+                    </div>
+                    <div class="video-card-meta">
+                        ⏱️ ${lecture.duration} | 📖 ${lecture.chapter}
+                    </div>
+                    <div class="video-card-buttons">
+                        <button class="btn-small btn-watch" onclick="watchVideo(${lecture.id})">
+                            ▶️ Watch
+                        </button>
+                        <button class="btn-small btn-delete" onclick="deleteVideo(${lecture.id})">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        videosList.innerHTML = html;
+    }
+
+    function deleteVideo(id) {
+        if (confirm('⚠️ Are you sure you want to delete this video?')) {
+            const lecture = lecturesData.find(l => l.id === id);
+            lecturesData = lecturesData.filter(l => l.id !== id);
+            localStorage.setItem('lectures', JSON.stringify(lecturesData));
+
+            console.log('🗑️ Deleted:', lecture.title);
+            showSuccess(`✅ "${lecture.title}" deleted successfully`);
+            displayVideos();
+            updateStats();
+        }
+    }
+
+    function watchVideo(id) {
+        // Redirect to lectures page with specific video
+        localStorage.setItem('currentVideoId', id);
+        window.location.href = 'lectures.html';
+    }
+
+    function resetForm() {
+        document.getElementById('lectureTitle').value = '';
+        document.getElementById('lectureSubject').value = '';
+        document.getElementById('lectureDuration').value = '';
+        document.getElementById('lectureChapter').value = '';
+        document.getElementById('lectureDescription').value = '';
+        document.getElementById('lectureNotes').value = '';
+        document.getElementById('videoFile').value = '';
+        document.getElementById('fileName').textContent = '';
+    }
+
+    function showSuccess(message) {
+        const successMsg = document.getElementById('successMessage');
+        successMsg.textContent = message;
+        successMsg.style.display = 'block';
+        setTimeout(() => {
+            successMsg.style.display = 'none';
+        }, 4000);
+    }
+
+    function showError(message) {
+        const errorMsg = document.getElementById('errorMessage');
+        errorMsg.textContent = message;
+        errorMsg.style.display = 'block';
+        setTimeout(() => {
+            errorMsg.style.display = 'none';
+        }, 4000);
+    }
+
+    function updateStats() {
+        document.getElementById('videoCount').textContent = lecturesData.length;
+        
+        // Calculate storage used
+        let totalSize = 0;
+        lecturesData.forEach(lecture => {
+            if (lecture.videoFile) {
+                totalSize += lecture.videoFile.length;
+            }
+        });
+        
+        const storageMB = (totalSize / 1024 / 1024).toFixed(1);
+        document.getElementById('storageSize').textContent = storageMB + 'MB';
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', initAdmin);
+
+    console.log('✅ admin.js loaded successfully');
+</script>
+</body>
+</html>

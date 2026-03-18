@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul of Medico - Mission MBBS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow: hidden;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: #0a0e27;
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== LOGIN SCREEN ==================== */
+        .screen {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .login-screen {
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .login-box.dark-mode {
+            background: #1a1f3a;
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .login-box.dark-mode .logo {
+            color: #8b9aff;
+        }
+
+        .tagline {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .login-box.dark-mode .tagline {
+            color: #aaa;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .login-box.dark-mode .btn-secondary {
+            background: #2a2f4a;
+            color: #fff;
+            border: 1px solid #3a3f5a;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ==================== TOP BAR ==================== */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        body.dark-mode .top-bar {
+            background: #1a1f3a;
+            border-bottom: 1px solid #333;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .top-bar-center {
+            text-align: center;
+        }
+
+        .batch-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .batch-info {
+            font-size: 12px;
+            color: #999;
+        }
+
+        body.dark-mode .batch-info {
+            color: #aaa;
+        }
+
+        .notification-bell {
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .notification-bell:hover {
+            transform: scale(1.2);
+        }
+
+        /* ==================== HOME SCREEN ==================== */
+        .home-screen {
+            padding-bottom: 80px;
+        }
+
+        .scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        body.dark-mode .scroll-container::-webkit-scrollbar-track {
+            background: #1a1f3a;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        body.dark-mode .card {
+            background: #1a1f3a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        body.dark-mode .card-title {
+            color: #fff;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .card-subtitle {
+            color: #aaa;
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-small-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-small-primary:hover {
+            background: #5568d3;
+        }
+
+        /* ==================== BATCH SCREEN ==================== */
+        .batch-screen {
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #eee;
+            padding: 0 15px;
+            margin-top: 60px;
+        }
+
+        body.dark-mode .tabs {
+            background: #1a1f3a;
+            border-bottom: 1px solid #333;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== CHAPTER LIST ==================== */
+        .chapter {
+            margin: 15px 0;
+        }
+
+        .chapter-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .chapter-title {
+            background: #2a2f4a;
+        }
+
+        .chapter-title:hover {
+            background: #efefef;
+        }
+
+        body.dark-mode .chapter-title:hover {
+            background: #3a3f5a;
+        }
+
+        .chapter.expanded .chapter-title {
+            background: #667eea;
+            color: white;
+        }
+
+        .lecture-list {
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+
+        .chapter.expanded .lecture-list {
+            display: block;
+            max-height: 500px;
+        }
+
+        .lecture-item {
+            background: white;
+            padding: 12px;
+            margin: 8px 0 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .lecture-item {
+            background: #2a2f4a;
+        }
+
+        .lecture-item:hover {
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+
+        .lecture-info {
+            flex: 1;
+        }
+
+        .lecture-title {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .lecture-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        body.dark-mode .lecture-meta {
+            color: #aaa;
+        }
+
+        .lecture-status {
+            font-size: 18px;
+            margin-left: 10px;
+        }
+
+        /* ==================== VIDEO PLAYER SCREEN ==================== */
+        .video-screen {
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .video-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            margin-top: 20px;
+        }
+
+        body.dark-mode .video-header {
+            background: #1a1f3a;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #667eea;
+        }
+
+        .video-title {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-controls {
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        body.dark-mode .video-controls {
+            background: #1a1f3a;
+            border-bottom: 1px solid #333;
+        }
+
+        .speed-btn {
+            padding: 8px 12px;
+            border: 1px solid #667eea;
+            color: #667eea;
+            background: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .speed-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .video-description {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .description-tabs {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #eee;
+            padding: 0 20px;
+            margin-top: 10px;
+        }
+
+        body.dark-mode .description-tabs {
+            border-bottom: 1px solid #333;
+        }
+
+        .desc-tab {
+            padding: 12px 0;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .desc-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .desc-content {
+            display: none;
+            padding: 15px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .desc-content.active {
+            display: block;
+        }
+
+        /* ==================== DPP QUESTION SCREEN ==================== */
+        .dpp-screen {
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .question-header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            margin-top: 60px;
+        }
+
+        body.dark-mode .question-header {
+            background: #1a1f3a;
+            border-bottom: 1px solid #333;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        body.dark-mode .question-number {
+            color: #aaa;
+        }
+
+        .question-text {
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .question-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        body.dark-mode .option {
+            background: #1a1f3a;
+            border-color: #333;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f9f9ff;
+        }
+
+        body.dark-mode .option:hover {
+            background: #2a2f4a;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        body.dark-mode .option.selected {
+            background: #2a2f4a;
+        }
+
+        .option.correct {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .option.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .option-text {
+            font-weight: 500;
+        }
+
+        .question-nav {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        body.dark-mode .question-nav {
+            background: #1a1f3a;
+            border-top: 1px solid #333;
+        }
+
+        .question-nav button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .question-nav .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .question-nav .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .question-nav .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        body.dark-mode .question-nav .btn-secondary {
+            background: #2a2f4a;
+            color: #fff;
+        }
+
+        /* ==================== RESULT SCREEN ==================== */
+        .result-screen {
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .result-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 350px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .result-box {
+            background: #1a1f3a;
+        }
+
+        .result-score {
+            font-size: 64px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .result-detail {
+            font-size: 14px;
+            color: #999;
+            margin: 10px 0;
+        }
+
+        body.dark-mode .result-detail {
+            color: #aaa;
+        }
+
+        .result-detail strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        body.dark-mode .result-detail strong {
+            color: #fff;
+        }
+
+        .result-button {
+            margin-top: 30px;
+        }
+
+        /* ==================== PROFILE SCREEN ==================== */
+        .profile-screen {
+            padding-bottom: 100px;
+        }
+
+        .profile-section {
+            background: white;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 12px;
+        }
+
+        body.dark-mode .profile-section {
+            background: #1a1f3a;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .profile-item {
+            border-bottom: 1px solid #333;
+        }
+
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        body.dark-mode .profile-label {
+            color: #aaa;
+        }
+
+        .profile-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        body.dark-mode .profile-value {
+            color: #fff;
+        }
+
+        /* ==================== SETTINGS SCREEN ==================== */
+        .settings-screen {
+            padding-bottom: 100px;
+        }
+
+        .settings-group {
+            background: white;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 12px;
+        }
+
+        body.dark-mode .settings-group {
+            background: #1a1f3a;
+        }
+
+        .settings-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        body.dark-mode .settings-title {
+            color: #fff;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: #ddd;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #667eea;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 24px;
+        }
+
+        /* ==================== BOTTOM NAV ==================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        body.dark-mode .bottom-nav {
+            background: #1a1f3a;
+            border-top: 1px solid #333;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            color: #999;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- LOGIN SCREEN -->
+    <div class="screen login-screen active" id="loginScreen">
+        <div class="login-box">
+            <div class="logo">🔬 Soul of Medico</div>
+            <div class="tagline">Mission MBBS Batch</div>
+            <button class="btn btn-primary" onclick="goToHome()">Continue with Google</button>
+            <button class="btn btn-secondary" onclick="goToHome()">Login with Phone</button>
+            <button class="btn btn-secondary" onclick="goToHome()">Login with Email</button>
+        </div>
+    </div>
+
+    <!-- HOME SCREEN -->
+    <div class="screen home-screen" id="homeScreen">
+        <div class="top-bar">
+            <div class="profile-icon" onclick="goToProfile()">A</div>
+            <div class="top-bar-center">
+                <div class="batch-name">Mission MBBS</div>
+                <div class="batch-info">NEET Preparation</div>
+            </div>
+            <div class="notification-bell" onclick="alert('No new notifications')">🔔</div>
+        </div>
+
+        <div class="scroll-container">
+            <!-- Continue Learning Card -->
+            <div class="card" onclick="goToVideo()">
+                <div class="card-title">▶️ Continue Learning</div>
+                <div class="card-subtitle">Physics - Current Electricity</div>
+                <div style="margin-bottom: 10px; font-size: 14px;">Last watched: 23:45 min</div>
+                <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToVideo()">Resume</button>
+            </div>
+
+            <!-- Batch Content Card -->
+            <div class="card" onclick="goToBatch()">
+                <div class="card-title">📚 Batch Content</div>
+                <div style="display: flex; gap: 15px; margin-top: 15px;">
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 24px;">🎥</div>
+                        <div style="font-size: 12px; margin-top: 5px;">Lectures</div>
+                    </div>
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 24px;">📝</div>
+                        <div style="font-size: 12px; margin-top: 5px;">DPP</div>
+                    </div>
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 24px;">✏️</div>
+                        <div style="font-size: 12px; margin-top: 5px;">Tests</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Added Card -->
+            <div class="card">
+                <div class="card-title">⭐ Recently Added</div>
+                <div class="card-subtitle">Last 24 hours</div>
+                <div style="font-size: 14px; margin: 10px 0;">• Biology - Cell Division</div>
+                <div style="font-size: 14px; margin: 10px 0;">• Chemistry - Thermodynamics</div>
+                <div style="font-size: 14px;">• Physics - Optics</div>
+            </div>
+
+            <!-- Your Activity Card -->
+            <div class="card">
+                <div class="card-title">📊 Your Activity</div>
+                <div style="margin: 15px 0;">
+                    <div style="font-size: 14px; margin: 8px 0;">Lectures watched: <strong>24</strong></div>
+                    <div style="font-size: 14px; margin: 8px 0;">Tests attempted: <strong>8</strong></div>
+                    <div style="font-size: 14px; margin: 8px 0;">Total study time: <strong>42h 30m</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BATCH SCREEN -->
+    <div class="screen batch-screen" id="batchScreen">
+        <div class="top-bar">
+            <div style="width: 40px;"></div>
+            <div class="top-bar-center">
+                <div class="batch-name">Mission MBBS</div>
+            </div>
+            <div class="notification-bell" onclick="alert('No new notifications')">🔔</div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('lecturesTab')">🎥 Lectures</div>
+            <div class="tab" onclick="switchTab('dppTab')">📝 DPP</div>
+            <div class="tab" onclick="switchTab('testsTab')">✏️ Tests</div>
+        </div>
+
+        <!-- LECTURES TAB -->
+        <div class="tab-content active" id="lecturesTab">
+            <div class="scroll-container">
+                <!-- Physics Chapter -->
+                <div class="chapter" onclick="toggleChapter(this)">
+                    <div class="chapter-title">⚡ Physics</div>
+                    <div class="lecture-list">
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToVideo()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Current Electricity</div>
+                                <div class="lecture-meta">45 min • Uploaded 2 days ago</div>
+                            </div>
+                            <div class="lecture-status">✅</div>
+                        </div>
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToVideo()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Magnetism</div>
+                                <div class="lecture-meta">52 min • Uploaded today</div>
+                            </div>
+                            <div class="lecture-status">⏱️</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chemistry Chapter -->
+                <div class="chapter" onclick="toggleChapter(this)">
+                    <div class="chapter-title">🧪 Chemistry</div>
+                    <div class="lecture-list">
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToVideo()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Organic Chemistry Basics</div>
+                                <div class="lecture-meta">38 min • Uploaded 1 week ago</div>
+                            </div>
+                            <div class="lecture-status">▶️</div>
+                        </div>
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToVideo()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Thermodynamics</div>
+                                <div class="lecture-meta">47 min • Uploaded 3 days ago</div>
+                            </div>
+                            <div class="lecture-status">▶️</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biology Chapter -->
+                <div class="chapter" onclick="toggleChapter(this)">
+                    <div class="chapter-title">🧬 Biology</div>
+                    <div class="lecture-list">
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToVideo()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Human Physiology - Part 1</div>
+                                <div class="lecture-meta">55 min • Uploaded yesterday</div>
+                            </div>
+                            <div class="lecture-status">▶️</div>
+                        </div>
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToVideo()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Cell Division & Genetics</div>
+                                <div class="lecture-meta">42 min • Uploaded today</div>
+                            </div>
+                            <div class="lecture-status">▶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DPP TAB -->
+        <div class="tab-content" id="dppTab">
+            <div class="scroll-container">
+                <!-- Physics DPP -->
+                <div class="chapter" onclick="toggleChapter(this)">
+                    <div class="chapter-title">⚡ Physics</div>
+                    <div class="lecture-list">
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToDPP()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Current Electricity - DPP 1</div>
+                                <div class="lecture-meta">10 questions • 30 min</div>
+                            </div>
+                            <div class="lecture-status">▶️</div>
+                        </div>
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToDPP()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Current Electricity - DPP 2</div>
+                                <div class="lecture-meta">10 questions • 30 min</div>
+                            </div>
+                            <div class="lecture-status">✅</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chemistry DPP -->
+                <div class="chapter" onclick="toggleChapter(this)">
+                    <div class="chapter-title">🧪 Chemistry</div>
+                    <div class="lecture-list">
+                        <div class="lecture-item" onclick="event.stopPropagation(); goToDPP()">
+                            <div class="lecture-info">
+                                <div class="lecture-title">Organic Chemistry - DPP 1</div>
+                                <div class="lecture-meta">10 questions • 30 min</div>
+                            </div>
+                            <div class="lecture-status">▶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TESTS TAB -->
+        <div class="tab-content" id="testsTab">
+            <div class="scroll-container">
+                <div class="card" onclick="goToTest()">
+                    <div class="card-title">📋 Chapter Test - Physics</div>
+                    <div style="font-size: 14px; margin: 10px 0;">
+                        <div>Questions: 25</div>
+                        <div>Duration: 45 min</div>
+                    </div>
+                    <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToTest()">Start Test</button>
+                </div>
+
+                <div class="card" onclick="goToTest()">
+                    <div class="card-title">📋 Full Length Test - NEET</div>
+                    <div style="font-size: 14px; margin: 10px 0;">
+                        <div>Questions: 200</div>
+                        <div>Duration: 180 min</div>
+                    </div>
+                    <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToTest()">Start Test</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📋 Quick Quiz - Chemistry</div>
+                    <div style="font-size: 14px; margin: 10px 0;">
+                        <div>Questions: 15</div>
+                        <div>Duration: 20 min</div>
+                    </div>
+                    <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToTest()">Start Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIDEO PLAYER SCREEN -->
+    <div class="screen video-screen" id="videoScreen">
+        <div class="video-header">
+            <button class="back-btn" onclick="goToBatch()">← Back</button>
+            <div class="video-title">Current Electricity</div>
+        </div>
+
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        </div>
+
+        <div class="video-controls">
+            <span style="font-weight: 500; margin-right: auto;">Playback Speed</span>
+            <button class="speed-btn active" onclick="setSpeed(this, '1x')">1x</button>
+            <button class="speed-btn" onclick="setSpeed(this, '1.5x')">1.5x</button>
+            <button class="speed-btn" onclick="setSpeed(this, '2x')">2x</button>
+        </div>
+
+        <div class="video-description">
+            <div class="description-tabs">
+                <div class="desc-tab active" onclick="switchDescTab(0)">Description</div>
+                <div class="desc-tab" onclick="switchDescTab(1)">Attachments</div>
+            </div>
+            <div class="desc-content active">
+                <p><strong>Current Electricity Lecture</strong></p>
+                <p>This lecture covers the fundamentals of electric current, Ohm's law, and circuit analysis.</p>
+                <p><br><strong>Topics Covered:</strong></p>
+                <ul>
+                    <li>Definition of electric current</li>
+                    <li>Ohm's law and resistance</li>
+                    <li>Series and parallel circuits</li>
+                    <li>Power and energy</li>
+                </ul>
+            </div>
+            <div class="desc-content">
+                <p>📄 <strong>Current_Electricity_Notes.pdf</strong> - 2.5 MB</p>
+                <p>📄 <strong>Practice_Problems.pdf</strong> - 1.2 MB</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DPP SCREEN -->
+    <div class="screen dpp-screen" id="dppScreen">
+        <div class="question-header">
+            <div class="question-number">Question 3 of 10</div>
+            <div class="question-text">What is the SI unit of electric current?</div>
+        </div>
+
+        <div class="question-body">
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">A) Ohm</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">B) Ampere</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">C) Volt</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">D) Watt</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-nav">
+            <button class="btn-small btn-secondary" onclick="previousQuestion()">← Previous</button>
+            <button class="btn-small btn-primary" onclick="submitAnswer()">Submit</button>
+            <button class="btn-small btn-secondary" onclick="nextQuestion()">Next →</button>
+        </div>
+    </div>
+
+    <!-- TEST SCREEN -->
+    <div class="screen dpp-screen" id="testScreen">
+        <div class="question-header">
+            <div class="question-number">Question 5 of 25</div>
+            <div class="question-text">A wire of length 10 m and cross-section 2 mm² has a resistance of 20 Ω. What is its resistivity?</div>
+        </div>
+
+        <div class="question-body">
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">A) 4 × 10⁻⁶ Ω·m</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">B) 2 × 10⁻⁶ Ω·m</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">C) 1 × 10⁻⁶ Ω·m</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-text">D) 8 × 10⁻⁶ Ω·m</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-nav">
+            <button class="btn-small btn-secondary" onclick="previousQuestion()">← Previous</button>
+            <button class="btn-small btn-primary" onclick="submitAnswer()">Submit</button>
+            <button class="btn-small btn-secondary" onclick="nextQuestion()">Next →</button>
+        </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div class="screen result-screen" id="resultScreen">
+        <div class="result-box">
+            <div style="font-size: 48px;">✅</div>
+            <div style="font-size: 18px; font-weight: 600; margin-top: 10px;">Quiz Complete!</div>
+            <div class="result-score">8/10</div>
+            <div class="result-detail">Correct: <strong>8</strong></div>
+            <div class="result-detail">Wrong: <strong>2</strong></div>
+            <div class="result-detail">Accuracy: <strong>80%</strong></div>
+            <button class="btn btn-primary result-button" onclick="goToHome()">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- PROFILE SCREEN -->
+    <div class="screen profile-screen" id="profileScreen">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goToHome()">← Back</button>
+            <div class="top-bar-center">
+                <div class="batch-name">Profile</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="scroll-container">
+            <div style="text-align: center; padding: 30px 0;">
+                <div style="font-size: 64px; margin-bottom: 10px;">👤</div>
+                <div style="font-size: 18px; font-weight: 600;">Aditya Kumar</div>
+                <div style="color: #999; font-size: 14px;">aditya.kumar@email.com</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-item">
+                    <span class="profile-label">Batch</span>
+                    <span class="profile-value">Mission MBBS</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Enrolled</span>
+                    <span class="profile-value">Jan 15, 2026</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Tests Attempted</span>
+                    <span class="profile-value">12</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Average Score</span>
+                    <span class="profile-value">76%</span>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <button class="btn btn-secondary" onclick="goToSettings()">⚙️ Settings</button>
+                <button class="btn btn-secondary" style="margin-top: 10px;" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div class="screen settings-screen" id="settingsScreen">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goToProfile()">← Back</button>
+            <div class="top-bar-center">
+                <div class="batch-name">Settings</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="scroll-container">
+            <div class="settings-group">
+                <div class="settings-title">Display</div>
+                <div class="settings-item">
+                    <span>Dark Mode</span>
+                    <div class="toggle-switch" onclick="toggleDarkMode(this)"></div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-title">Preferences</div>
+                <div class="settings-item">
+                    <span>Language</span>
+                    <select style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option>English</option>
+                        <option>Hindi</option>
+                    </select>
+                </div>
+                <div class="settings-item" style="padding-top: 12px;">
+                    <span>Notifications</span>
+                    <div class="toggle-switch active" onclick="toggleNotifications(this)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="goToHome()">
+            <div class="nav-icon">🏠</div>
+            Home
+        </button>
+        <button class="nav-item" onclick="goToBatch()">
+            <div class="nav-icon">📚</div>
+            Batch
+        </button>
+        <button class="nav-item" onclick="goToProfile()">
+            <div class="nav-icon">👤</div>
+            Profile
+        </button>
+    </div>
+</div>
+
+<script>
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        
+        // Update nav items
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        if (screenId === 'homeScreen') {
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        } else if (screenId === 'batchScreen') {
+            document.querySelectorAll('.nav-item')[1].classList.add('active');
+        } else if (screenId === 'profileScreen') {
+            document.querySelectorAll('.nav-item')[2].classList.add('active');
+        }
+    }
+
+    function goToHome() { showScreen('homeScreen'); }
+    function goToBatch() { showScreen('batchScreen'); }
+    function goToProfile() { showScreen('profileScreen'); }
+    function goToSettings() { showScreen('settingsScreen'); }
+    function goToVideo() { showScreen('videoScreen'); }
+    function goToDPP() { showScreen('dppScreen'); }
+    function goToTest() { showScreen('testScreen'); }
+    function logout() {
+        showScreen('loginScreen');
+    }
+
+    function switchTab(tabId) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        
+        // Remove active class from all tab buttons
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        
+        // Show selected tab
+        document.getElementById(tabId).classList.add('active');
+        
+        // Add active class to clicked tab
+        event.target.classList.add('active');
+    }
+
+    function toggleChapter(element) {
+        element.classList.toggle('expanded');
+    }
+
+    function setSpeed(btn, speed) {
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        alert('Playback speed set to ' + speed);
+    }
+
+    function switchDescTab(index) {
+        const tabs = document.querySelectorAll('.desc-tab');
+        const contents = document.querySelectorAll('.desc-content');
+        
+        tabs.forEach(tab => tab.classList.remove('active'));
+        contents.forEach(content => content.classList.remove('active'));
+        
+        tabs[index].classList.add('active');
+        contents[index].classList.add('active');
+    }
+
+    function selectOption(element) {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+    }
+
+    function submitAnswer() {
+        const selected = document.querySelector('.option.selected');
+        if (!selected) {
+            alert('Please select an option');
+            return;
+        }
+        
+        // Simulate checking answer
+        const correct = Math.random() > 0.3;
+        if (correct) {
+            selected.classList.add('correct');
+            alert('✅ Correct!');
+        } else {
+            selected.classList.add('incorrect');
+            alert('❌ Incorrect! Correct answer is option B');
+        }
+    }
+
+    function nextQuestion() {
+        alert('Moving to next question...');
+    }
+
+    function previousQuestion() {
+        alert('Moving to previous question...');
+    }
+
+    function toggleDarkMode(element) {
+        document.body.classList.toggle('dark-mode');
+        element.classList.toggle('active');
+    }
+
+    function toggleNotifications(element) {
+        element.classList.toggle('active');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Soul of Medico - Your Complete NEET Preparation Platform">
+    <title>Soul of Medico - Mission MBBS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='white' text-anchor='middle' dominant-baseline='central' font-weight='bold'>📚</text></svg>">
+</head>
+<body>
+
+<div class="container">
+    <!-- HOME SCREEN -->
+    <div class="screen home-screen active" id="homeScreen">
+        <div class="top-bar">
+            <div class="profile-icon" onclick="goToProfile()">A</div>
+            <div class="top-bar-center">
+                <div class="batch-name">Mission MBBS</div>
+                <div class="batch-info">NEET Preparation</div>
+            </div>
+            <div class="notification-bell" onclick="alert('No new notifications')">🔔</div>
+        </div>
+
+        <div class="scroll-container">
+            <!-- Batch Content Card -->
+            <div class="card" onclick="goToLectures()">
+                <div class="card-title">📚 Lectures</div>
+                <div class="card-subtitle">Watch video lectures</div>
+                <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToLectures()">Go to Lectures</button>
+            </div>
+
+            <!-- DPP Card -->
+            <div class="card" onclick="goToDPP()">
+                <div class="card-title">📝 Daily Practice Problems</div>
+                <div class="card-subtitle">Solve practice questions</div>
+                <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToDPP()">Start DPP</button>
+            </div>
+
+            <!-- Tests Card -->
+            <div class="card" onclick="goToTests()">
+                <div class="card-title">✏️ Tests</div>
+                <div class="card-subtitle">Attempt mock tests</div>
+                <button class="btn-small btn-small-primary" onclick="event.stopPropagation(); goToTests()">Take Test</button>
+            </div>
+
+            <!-- Admin Panel Card -->
+            <div class="card" onclick="goToAdmin()" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white;">
+                <div class="card-title">🛡️ Admin Panel</div>
+                <div class="card-subtitle">Upload lecture videos</div>
+                <button class="btn-small" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;" onclick="event.stopPropagation(); goToAdmin()">Go to Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE SCREEN -->
+    <div class="screen profile-screen" id="profileScreen">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goToHome()">← Back</button>
+            <div class="top-bar-center">
+                <div class="batch-name">Profile</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="scroll-container">
+            <div style="text-align: center; padding: 30px 0;">
+                <div style="font-size: 64px; margin-bottom: 10px;">👤</div>
+                <div style="font-size: 18px; font-weight: 600;">User</div>
+                <div style="color: #999; font-size: 14px;">user@example.com</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-item">
+                    <span class="profile-label">Batch</span>
+                    <span class="profile-value">Mission MBBS</span>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <button class="btn btn-secondary" onclick="goToSettings()">⚙️ Settings</button>
+                <button class="btn btn-secondary" style="margin-top: 10px;" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div class="screen settings-screen" id="settingsScreen">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goToProfile()">← Back</button>
+            <div class="top-bar-center">
+                <div class="batch-name">Settings</div>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="scroll-container">
+            <div class="settings-group">
+                <div class="settings-title">Display</div>
+                <div class="settings-item">
+                    <span>Dark Mode</span>
+                    <div class="toggle-switch" onclick="toggleDarkMode(this)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="goToHome()">
+            <div class="nav-icon">🏠</div>
+            Home
+        </button>
+        <button class="nav-item" onclick="goToLectures()">
+            <div class="nav-icon">🎥</div>
+            Lectures
+        </button>
+        <button class="nav-item" onclick="goToTests()">
+            <div class="nav-icon">📝</div>
+            Tests
+        </button>
+        <button class="nav-item" onclick="goToProfile()">
+            <div class="nav-icon">👤</div>
+            Profile
+        </button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

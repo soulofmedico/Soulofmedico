@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Status & Setup - Soul of Medico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 20px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .status-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .status-card.success {
+            border-left-color: #28a745;
+        }
+        .status-card.warning {
+            border-left-color: #ffc107;
+        }
+        .status-card.error {
+            border-left-color: #dc3545;
+        }
+        .status-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .status-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 20px;
+            padding-left: 40px;
+            position: relative;
+        }
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+            border-left: 3px solid #667eea;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button.secondary {
+            background: #6c757d;
+        }
+        button.secondary:hover {
+            background: #5a6268;
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f8f9fa;
+            color: #667eea;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .feature-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-item::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🎓 Soul of Medico - MBBS Preparation App</h1>
+        <p>Complete Setup & Status Guide</p>
+    </div>
+
+    <div class="content">
+        <!-- STATUS SECTION -->
+        <div class="section">
+            <h2>✅ System Status</h2>
+            <div class="status-grid">
+                <div class="status-card success">
+                    <h3><span class="status-icon">✓</span>Video Player</h3>
+                    <p>Full YouTube integration with controls</p>
+                </div>
+                <div class="status-card success">
+                    <h3><span class="status-icon">✓</span>Authentication</h3>
+                    <p>Email, Phone OTP, Social Login</p>
+                </div>
+                <div class="status-card success">
+                    <h3><span class="status-icon">✓</span>Responsive Design</h3>
+                    <p>Works on all devices</p>
+                </div>
+                <div class="status-card success">
+                    <h3><span class="status-icon">✓</span>Dark Mode</h3>
+                    <p>Easy on the eyes</p>
+                </div>
+                <div class="status-card success">
+                    <h3><span class="status-icon">✓</span>Session Management</h3>
+                    <p>Secure user sessions</p>
+                </div>
+                <div class="status-card success">
+                    <h3><span class="status-icon">✓</span>Error Handling</h3>
+                    <p>Comprehensive error checks</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURES SECTION -->
+        <div class="section">
+            <h2>🚀 Available Features</h2>
+            <div class="feature-list">
+                <div class="feature-item">Lectures with YouTube videos</div>
+                <div class="feature-item">Practice tests with scoring</div>
+                <div class="feature-item">User profiles & settings</div>
+                <div class="feature-item">Dark/Light mode toggle</div>
+                <div class="feature-item">Playback speed control</div>
+                <div class="feature-item">Notes & descriptions</div>
+                <div class="feature-item">Session persistence</div>
+                <div class="feature-item">Mobile responsive</div>
+            </div>
+        </div>
+
+        <!-- QUICK START SECTION -->
+        <div class="section">
+            <h2>🚀 Quick Start (3 Steps)</h2>
+            <ol class="steps">
+                <li>
+                    <strong>Open login.html</strong>
+                    <p>Double-click login.html file to open in browser</p>
+                </li>
+                <li>
+                    <strong>Login with test credentials</strong>
+                    <p>
+                        Email: <code>student@example.com</code><br>
+                        Password: <code>123456</code>
+                    </p>
+                </li>
+                <li>
+                    <strong>Click "Lectures" to watch videos</strong>
+                    <p>YouTube videos will play with full controls</p>
+                </li>
+            </ol>
+            <div class="button-group">
+                <button onclick="alert('Open login.html in browser')">Start App</button>
+                <button onclick="testVideoPlayer()" class="secondary">Test Video</button>
+            </div>
+        </div>
+
+        <!-- CREDENTIALS SECTION -->
+        <div class="section">
+            <h2>🔑 Test Credentials</h2>
+            <table>
+                <tr>
+                    <th>Login Method</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><code>student@example.com</code></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><code>123456</code></td>
+                </tr>
+                <tr>
+                    <td>Phone (OTP)</td>
+                    <td><code>9876543210</code></td>
+                </tr>
+                <tr>
+                    <td>OTP Code</td>
+                    <td><code>123456</code></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ADD VIDEOS SECTION -->
+        <div class="section">
+            <h2>🎥 How to Add Videos</h2>
+            <ol class="steps">
+                <li>
+                    <strong>Get YouTube Video ID</strong>
+                    <p>From URL: <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code></p>
+                    <p>Extract ID: <code>dQw4w9WgXcQ</code> (11 characters)</p>
+                </li>
+                <li>
+                    <strong>Edit data.js file</strong>
+                    <p>Add to the <code>lectures</code> array:</p>
+                    <div class="code-block">
+{
+    id: 2,
+    title: "Your Lecture Title",
+    subject: "Chemistry",
+    youtubeId: "dQw4w9WgXcQ",
+    duration: "45 min",
+    description: "Full description here",
+    notes: "Important notes"
+}
+                    </div>
+                </li>
+                <li>
+                    <strong>Refresh the page</strong>
+                    <p>Press Ctrl+R or Cmd+R in browser</p>
+                </li>
+            </ol>
+        </div>
+
+        <!-- ADD TESTS SECTION -->
+        <div class="section">
+            <h2>📝 How to Add Tests</h2>
+            <p>Edit data.js and add to the <code>tests</code> array:</p>
+            <div class="code-block">
+{
+    id: 1,
+    title: "Chemistry Quiz",
+    description: "Test your knowledge",
+    duration: 30,
+    questions: [
+        {
+            id: 1,
+            text: "What is the SI unit of current?",
+            options: ["Ohm", "Ampere", "Volt", "Watt"],
+            correctAnswer: 1,
+            explanation: "Ampere is the SI unit"
+        }
+    ]
+}
+            </div>
+            <p style="margin-top: 15px;">
+                <strong>Important:</strong> 
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>correctAnswer is the index (0, 1, 2, or 3)</li>
+                    <li>Must have exactly 4 options</li>
+                    <li>Duration is in minutes</li>
+                </ul>
+            </p>
+        </div>
+
+        <!-- TROUBLESHOOTING SECTION -->
+        <div class="section">
+            <h2>🔧 Troubleshooting</h2>
+            
+            <div class="status-card warning">
+                <h3>❓ Video not loading?</h3>
+                <p><strong>Solution:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Check YouTube ID is exactly 11 characters</li>
+                    <li>Verify video is public (not private/unlisted)</li>
+                    <li>Hard refresh: Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)</li>
+                    <li>Open debug.html to test video embedding</li>
+                </ul>
+            </div>
+
+            <div class="status-card warning">
+                <h3>❓ Lectures not showing?</h3>
+                <p><strong>Solution:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Check data.js has valid JSON syntax</li>
+                    <li>Use commas between objects in array</li>
+                    <li>No trailing commas in last item</li>
+                    <li>Check browser console (F12) for errors</li>
+                </ul>
+            </div>
+
+            <div class="status-card warning">
+                <h3>❓ Login not working?</h3>
+                <p><strong>Solution:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Use exact test credentials provided</li>
+                    <li>Email: student@example.com</li>
+                    <li>Password: 123456</li>
+                    <li>Check if cookies/storage are enabled</li>
+                </ul>
+            </div>
+
+            <div class="button-group">
+                <button onclick="openDebug()" class="secondary">Open Debug Tool</button>
+                <button onclick="clearCache()" class="secondary">Clear Cache</button>
+            </div>
+        </div>
+
+        <!-- FILES SECTION -->
+        <div class="section">
+            <h2>📁 File Structure</h2>
+            <table>
+                <tr>
+                    <th>File</th>
+                    <th>Purpose</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td><strong>login.html</strong></td>
+                    <td>Authentication page</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                    <td><strong>index.html</strong></td>
+                    <td>Home/Dashboard page</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                    <td><strong>lectures.html</strong></td>
+                    <td>Lectures & videos page</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                    <td><strong>tests.html</strong></td>
+                    <td>Practice tests page</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                    <td><strong>data.js</strong></td>
+                    <td>Lectures & tests data</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                    <td><strong>style.css</strong></td>
+                    <td>All styling</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                    <td><strong>debug.html</strong></td>
+                    <td>Diagnostic tool</td>
+                    <td><span class="badge badge-success">✓</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SUPPORT SECTION -->
+        <div class="section">
+            <h2>💡 Need Help?</h2>
+            <div class="status-card">
+                <h3>📖 Documentation Files</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>QUICK_START.txt</strong> - Quick reference</li>
+                    <li><strong>README.md</strong> - Full documentation</li>
+                    <li><strong>HOW_TO_ADD_VIDEOS_AND_TESTS.md</strong> - Data format guide</li>
+                    <li><strong>debug.html</strong> - Diagnostic tool</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function testVideoPlayer() {
+        const url = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+        const newWindow = window.open();
+        newWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Video Test</title>
+                <style>
+                    body { margin: 0; background: #000; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+                    iframe { width: 90vw; height: 90vh; border: none; }
+                </style>
+            </head>
+            <body>
+                <iframe src="${url}" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"></iframe>
+            </body>
+            </html>
+        `);
+    }
+
+    function openDebug() {
+        window.location.href = 'debug.html';
+    }
+
+    function clearCache() {
+        localStorage.clear();
+        sessionStorage.clear();
+        alert('✅ Cache cleared! Please refresh the page.');
+        location.reload();
+    }
+</script>
+
+</body>
+</html>

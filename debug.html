@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Tool - Soul of Medico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        h2 {
+            color: #00cc00;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 5px;
+        }
+        .section {
+            background: #222;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 3px solid #00ff00;
+            border-radius: 5px;
+        }
+        .status-ok {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .status-error {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        .status-warning {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+        code {
+            background: #111;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00ff00;
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            overflow-x: auto;
+            border-left: 2px solid #00cc00;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #00cc00;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .output {
+            background: #000;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #00ff00;
+        }
+        .line {
+            margin: 5px 0;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border-left: 3px solid #00ff00;
+        }
+        .test-result.fail {
+            background: #3a0000;
+            border-left-color: #ff0000;
+        }
+        .test-result.pass {
+            background: #003a00;
+            border-left-color: #00ff00;
+        }
+        .test-result.warn {
+            background: #3a2a00;
+            border-left-color: #ffaa00;
+        }
+        table {
+            width: 100%;
+            margin: 10px 0;
+            border-collapse: collapse;
+        }
+        td, th {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        th {
+            background: #333;
+            color: #00ff00;
+        }
+        tr:hover {
+            background: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔧 DEBUG TOOL - SOUL OF MEDICO</h1>
+    
+    <!-- SESSION CHECK -->
+    <div class="section">
+        <h2>📋 Session Status</h2>
+        <div id="sessionStatus"></div>
+        <div class="button-group">
+            <button onclick="checkSession()">Check Session</button>
+            <button onclick="clearSession()">Clear Session</button>
+            <button onclick="createTestSession()">Create Test Session</button>
+        </div>
+    </div>
+
+    <!-- DATA CHECK -->
+    <div class="section">
+        <h2>📚 Data.js Status</h2>
+        <div id="dataStatus"></div>
+        <div class="button-group">
+            <button onclick="checkData()">Check Data</button>
+            <button onclick="loadDataFile()">Reload Data</button>
+            <button onclick="viewLectures()">View Lectures</button>
+            <button onclick="viewTests()">View Tests</button>
+        </div>
+    </div>
+
+    <!-- YOUTUBE ID VALIDATOR -->
+    <div class="section">
+        <h2>🎥 YouTube ID Validator</h2>
+        <input type="text" id="youtubeIdInput" placeholder="Paste YouTube ID here" style="padding: 10px; width: 100%; background: #333; color: #00ff00; border: 1px solid #00ff00; border-radius: 5px; font-family: monospace;">
+        <div class="button-group">
+            <button onclick="validateYoutubeId()">Validate ID</button>
+            <button onclick="testEmbedding()">Test Embedding</button>
+        </div>
+        <div id="youtubeStatus"></div>
+    </div>
+
+    <!-- FILE CHECK -->
+    <div class="section">
+        <h2>📁 File Status</h2>
+        <div id="fileStatus"></div>
+        <button onclick="checkFiles()">Check All Files</button>
+    </div>
+
+    <!-- CONSOLE OUTPUT -->
+    <div class="section">
+        <h2>📝 Console Output</h2>
+        <div class="output" id="consoleOutput"></div>
+        <button onclick="clearConsole()">Clear Console</button>
+        <button onclick="downloadDebugLog()">Download Log</button>
+    </div>
+
+    <!-- TESTS -->
+    <div class="section">
+        <h2>✅ System Tests</h2>
+        <div id="testResults"></div>
+        <button onclick="runAllTests()">Run All Tests</button>
+    </div>
+
+    <!-- QUICK FIXES -->
+    <div class="section">
+        <h2>🔧 Quick Fixes</h2>
+        <div class="button-group">
+            <button onclick="fixDarkMode()">Fix Dark Mode</button>
+            <button onclick="resetData()">Reset to Default Data</button>
+            <button onclick="testVideoEmbed()">Test Video Embed</button>
+            <button onclick="clearAllCache()">Clear All Cache</button>
+        </div>
+    </div>
+
+    <!-- REFERENCE -->
+    <div class="section">
+        <h2>📖 Reference</h2>
+        <p>YouTube URL: <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code></p>
+        <p>Extract ID: <code>dQw4w9WgXcQ</code></p>
+        <p>Test Credentials:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>student@example.com</td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>123456</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>9876543210</td>
+            </tr>
+            <tr>
+                <td>OTP</td>
+                <td>123456</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Log capture
+    let logs = [];
+    const originalLog = console.log;
+    const originalError = console.error;
+    const originalWarn = console.warn;
+
+    console.log = function(...args) {
+        originalLog.apply(console, args);
+        logs.push('✅ ' + args.join(' '));
+        updateConsoleOutput();
+    };
+
+    console.error = function(...args) {
+        originalError.apply(console, args);
+        logs.push('❌ ERROR: ' + args.join(' '));
+        updateConsoleOutput();
+    };
+
+    console.warn = function(...args) {
+        originalWarn.apply(console, args);
+        logs.push('⚠️ WARNING: ' + args.join(' '));
+        updateConsoleOutput();
+    };
+
+    function updateConsoleOutput() {
+        const output = document.getElementById('consoleOutput');
+        output.innerHTML = logs.map(log => `<div class="line">${log}</div>`).join('');
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function checkSession() {
+        const status = document.getElementById('sessionStatus');
+        const session = localStorage.getItem('userSession');
+        
+        if (session) {
+            try {
+                const user = JSON.parse(session);
+                status.innerHTML = `
+                    <div class="test-result pass">
+                        <span class="status-ok">✅ Session Found</span>
+                        <br>User: ${user.name || 'Unknown'}
+                        <br>Email: ${user.email || 'Unknown'}
+                        <br>Session Data: <code>${session}</code>
+                    </div>
+                `;
+            } catch (e) {
+                status.innerHTML = `<div class="test-result fail"><span class="status-error">❌ Invalid Session Data</span><br>${e.message}</div>`;
+            }
+        } else {
+            status.innerHTML = `<div class="test-result warn"><span class="status-warning">⚠️ No Session Found</span><br>Please login first at login.html</div>`;
+        }
+    }
+
+    function clearSession() {
+        localStorage.removeItem('userSession');
+        document.getElementById('sessionStatus').innerHTML = `<div class="test-result pass"><span class="status-ok">✅ Session Cleared</span></div>`;
+    }
+
+    function createTestSession() {
+        const testUser = {
+            id: 1,
+            name: 'Test Student',
+            email: 'student@example.com',
+            phone: '9876543210'
+        };
+        localStorage.setItem('userSession', JSON.stringify(testUser));
+        document.getElementById('sessionStatus').innerHTML = `<div class="test-result pass"><span class="status-ok">✅ Test Session Created</span><br>User: ${testUser.name}</div>`;
+    }
+
+    function checkData() {
+        const status = document.getElementById('dataStatus');
+        
+        // Try to load data.js
+        const script = document.createElement('script');
+        script.src = 'data.js?t=' + Date.now();
+        script.onload = function() {
+            let html = '';
+            
+            // Check lectures
+            if (typeof lectures !== 'undefined') {
+                html += `<div class="test-result pass"><span class="status-ok">✅ Lectures Loaded: ${lectures.length} lecture(s)</span>`;
+                if (lectures.length > 0) {
+                    html += '<ul>';
+                    lectures.forEach((l, i) => {
+                        html += `<li>ID: ${l.id}, Title: ${l.title}, YouTube: ${l.youtubeId || 'MISSING'}</li>`;
+                    });
+                    html += '</ul>';
+                }
+                html += '</div>';
+            } else {
+                html += `<div class="test-result fail"><span class="status-error">❌ Lectures Not Found</span></div>`;
+            }
+            
+            // Check tests
+            if (typeof tests !== 'undefined') {
+                html += `<div class="test-result pass"><span class="status-ok">✅ Tests Loaded: ${tests.length} test(s)</span></div>`;
+            } else {
+                html += `<div class="test-result warn"><span class="status-warning">⚠️ Tests Not Found (OK if not added yet)</span></div>`;
+            }
+            
+            status.innerHTML = html;
+        };
+        script.onerror = function() {
+            status.innerHTML = `<div class="test-result fail"><span class="status-error">❌ Failed to Load data.js</span></div>`;
+        };
+        document.body.appendChild(script);
+    }
+
+    function loadDataFile() {
+        checkData();
+    }
+
+    function viewLectures() {
+        const script = document.createElement('script');
+        script.src = 'data.js?t=' + Date.now();
+        script.onload = function() {
+            if (typeof lectures !== 'undefined') {
+                const output = document.getElementById('dataStatus');
+                output.innerHTML = '<pre style="background: #000; color: #00ff00; padding: 10px; overflow-x: auto;">' + 
+                    JSON.stringify(lectures, null, 2) + '</pre>';
+            }
+        };
+        document.body.appendChild(script);
+    }
+
+    function viewTests() {
+        const script = document.createElement('script');
+        script.src = 'data.js?t=' + Date.now();
+        script.onload = function() {
+            if (typeof tests !== 'undefined') {
+                const output = document.getElementById('dataStatus');
+                output.innerHTML = '<pre style="background: #000; color: #00ff00; padding: 10px; overflow-x: auto;">' + 
+                    JSON.stringify(tests, null, 2) + '</pre>';
+            }
+        };
+        document.body.appendChild(script);
+    }
+
+    function validateYoutubeId() {
+        const input = document.getElementById('youtubeIdInput').value.trim();
+        const status = document.getElementById('youtubeStatus');
+        
+        if (!input) {
+            status.innerHTML = `<div class="test-result warn"><span class="status-warning">⚠️ Please enter a YouTube ID</span></div>`;
+            return;
+        }
+        
+        if (input.length !== 11) {
+            status.innerHTML = `<div class="test-result fail"><span class="status-error">❌ Invalid Length: ${input.length} chars (should be 11)</span></div>`;
+            return;
+        }
+        
+        status.innerHTML = `<div class="test-result pass"><span class="status-ok">✅ Valid YouTube ID</span><br>ID: ${input}</div>`;
+    }
+
+    function testEmbedding() {
+        const input = document.getElementById('youtubeIdInput').value.trim();
+        
+        if (input.length !== 11) {
+            alert('Please enter a valid 11-character YouTube ID');
+            return;
+        }
+        
+        const url = `https://www.youtube.com/embed/${input}`;
+        const status = document.getElementById('youtubeStatus');
+        
+        status.innerHTML = `<div class="test-result pass">
+            <span class="status-ok">✅ Embed URL:</span>
+            <code>${url}</code>
+            <iframe src="${url}" width="100%" height="200" style="margin-top: 10px; border: 1px solid #00ff00;"></iframe>
+        </div>`;
+    }
+
+    function checkFiles() {
+        const status = document.getElementById('fileStatus');
+        const files = ['login.html', 'index.html', 'lectures.html', 'tests.html', 'data.js', 'style.css', 'login.js', 'app.js', 'lectures.js', 'tests.js'];
+        
+        status.innerHTML = '<p>Checking files...</p>';
+        
+        Promise.all(files.map(file => 
+            fetch(file, { method: 'HEAD' })
+                .then(r => ({file, exists: r.ok}))
+                .catch(() => ({file, exists: false}))
+        )).then(results => {
+            let html = '';
+            results.forEach(r => {
+                if (r.exists) {
+                    html += `<div class="test-result pass"><span class="status-ok">✅</span> ${r.file}</div>`;
+                } else {
+                    html += `<div class="test-result fail"><span class="status-error">❌</span> ${r.file}</div>`;
+                }
+            });
+            status.innerHTML = html;
+        });
+    }
+
+    function clearConsole() {
+        logs = [];
+        document.getElementById('consoleOutput').innerHTML = '';
+    }
+
+    function downloadDebugLog() {
+        const log = logs.join('\n');
+        const blob = new Blob([log], {type: 'text/plain'});
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'debug-log-' + new Date().toISOString().slice(0,10) + '.txt';
+        a.click();
+    }
+
+    function runAllTests() {
+        const results = document.getElementById('testResults');
+        results.innerHTML = '';
+        
+        let tests_run = 0;
+        let tests_pass = 0;
+
+        // Test 1: Session
+        const session = localStorage.getItem('userSession');
+        const test1 = session ? 'pass' : 'warn';
+        const test1_msg = session ? 'Session exists' : 'No session (login first)';
+        appendTest(test1, test1_msg);
+        if (test1 === 'pass') tests_pass++;
+        tests_run++;
+
+        // Test 2: Data.js
+        fetch('data.js')
+            .then(r => r.ok ? (tests_pass++, 'pass') : 'fail')
+            .then(result => {
+                appendTest(result, 'data.js file');
+                tests_run++;
+                checkDataLoaded();
+            });
+    }
+
+    function appendTest(status, message) {
+        const results = document.getElementById('testResults');
+        const div = document.createElement('div');
+        div.className = 'test-result ' + (status === 'pass' ? 'pass' : status === 'fail' ? 'fail' : 'warn');
+        div.innerHTML = `<span class="status-${status}">✅</span> ${message}`;
+        results.appendChild(div);
+    }
+
+    function checkDataLoaded() {
+        const script = document.createElement('script');
+        script.src = 'data.js?t=' + Date.now();
+        script.onload = function() {
+            if (typeof lectures !== 'undefined' && lectures.length > 0) {
+                appendTest('pass', `Data loaded (${lectures.length} lectures)`);
+            } else {
+                appendTest('warn', 'Data loaded but no lectures');
+            }
+        };
+        document.body.appendChild(script);
+    }
+
+    function fixDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        document.getElementById('testResults').innerHTML = `<div class="test-result pass"><span class="status-ok">✅ Dark Mode: ${isDark ? 'ON' : 'OFF'}</span></div>`;
+    }
+
+    function resetData() {
+        const defaultData = `const lectures = [
+    {
+        id: 1,
+        title: "IUPAC Nomenclature",
+        subject: "Chemistry",
+        youtubeId: "58GV7_WTCoKzaX_Y",
+        duration: "60 min",
+        description: "Complete guide to IUPAC nomenclature",
+        notes: "Learn systematic naming"
+    }
+];
+const tests = [];`;
+        alert('Copy this to data.js:\n\n' + defaultData);
+    }
+
+    function testVideoEmbed() {
+        const testId = '58GV7_WTCoKzaX_Y';
+        const url = `https://www.youtube.com/embed/${testId}`;
+        const status = document.getElementById('testResults');
+        status.innerHTML = `
+            <div class="test-result pass">
+                <span class="status-ok">✅ Test Video Embed</span>
+                <p>Video ID: ${testId}</p>
+                <iframe src="${url}" width="100%" height="300" style="margin-top: 10px; border: 1px solid #00ff00; border-radius: 5px;"></iframe>
+            </div>
+        `;
+    }
+
+    function clearAllCache() {
+        localStorage.clear();
+        sessionStorage.clear();
+        document.getElementById('testResults').innerHTML = `<div class="test-result pass"><span class="status-ok">✅ Cache Cleared</span></div>`;
+    }
+
+    // Auto-check on load
+    window.addEventListener('load', function() {
+        checkSession();
+        checkData();
+    });
+</script>
+
+</body>
+</html>
